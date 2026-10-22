@@ -27,30 +27,41 @@ Regras:
 4. **CTA:** use `cta_seguir` do avatar. Se ele é vazio, tire o CTA final da fala e deixe `cta_final` vazio. Nunca prometa link, livro, produto, guia ou DM que o avatar não tem.
 5. **Linha vermelha:** os temas de `linhas_vermelhas` do avatar e, sempre, promessa de cura, conselho médico/financeiro/jurídico arriscado ou resultado garantido. Não reescreva sozinho: mostre o trecho ao usuário e proponha uma versão segura do mesmo tamanho.
 6. **Identidade:** nunca invente biografia, credencial, produto ou resultado pessoal. Marca do original vira termo genérico.
-7. **Nome:** nunca escreva o nome do avatar nos prompts. O Personagem vai no comando (`--personagem-id`).
+7. **Nome:** nunca escreva o nome do avatar solto nos prompts. O Personagem vai no comando (`--personagem-id`) e só aparece como menção `@<nome_publico>` onde se aplica (veja "Referências com `@`").
 8. **Cena `off`:** narração sem rosto (close de mão, produto, objeto). `quadro_s`: o instante do original que melhor mostra o enquadramento; com ele, a imagem nasce desse quadro.
 
 ## 2. Tomadas
 
 Cada vídeo do Flow sai com 8 s. Divida a fala de cada cena na pontuação em partes de **até 16 palavras**, o mínimo de partes possível, sem mudar palavras nem ordem. Nomes: `01` (cena de uma tomada) ou `04a`, `04b`.
 
+## Referências com `@` (como o gflow cita)
+
+O gflow resolve `@nome` no prompt como menção a um Personagem do projeto ou a uma mídia enviada (código 29 se não achar). Cite cada referência **inline, onde ela se aplica**, nunca solta no fim:
+
+- `@<Personagem>`: o `nome_publico` do avatar, o mesmo valor de `--personagem-nome` / `GFLOW_PERSONAGEM_NOME`. É só o nome do Personagem no Flow, não vai biografia nem dado pessoal.
+- `@<IMAGE_REF>`: a imagem enviada com `--ref`, citada pelo nome do arquivo sem extensão (`scripts/gflow_cena.py` → `nome_ref()`). Ex.: `--ref cenas/01/quadro.jpg` → `@quadro`; no vídeo, `--ref cenas/01/imagem.png` → `@imagem`. Dê nomes de arquivo simples (letras, números, `-`), sem espaço.
+- Sem Personagem na conta (só `--ref` com as fotos): troque `@<Personagem>` por `@rosto` (de `avatares/<chave>/rosto.jpg`).
+
+Os modelos abaixo também estão em código: `prompt_imagem()` e `prompt_video()` em `scripts/gflow_cena.py`.
+
 ## 3. Prompt da imagem da cena (1 por cena, 0 crédito)
 
 ```text
-{sujeito_prompt}. {setting of the original shot, concrete: place, background, surfaces, props, light}. {action and framing}. {wardrobe from the visual bible}. Photorealistic smartphone creator footage, vertical 9:16, 35-50 mm, shallow depth of field, natural matte skin with visible pores, matching the original's lighting and colors. No cartoon, no 3D render, no plastic or waxy skin, no extra fingers or hands, no captions, no on-screen text, no logos, no watermark.
+Keep the @{IMAGE_REF} reference image's exact setting, background, lighting, camera framing, composition and props: {setting of the original shot, concrete: place, background, surfaces, props, light}. Replace ONLY the person with {sujeito_prompt} from the character @{Personagem}. {action and framing}. {wardrobe from the visual bible}. Photorealistic smartphone creator footage, vertical 9:16, 35-50 mm, shallow depth of field, natural matte skin with visible pores, matching the original's lighting and colors. No cartoon, no 3D render, no plastic or waxy skin, no extra fingers or hands, no captions, no on-screen text, no logos, no watermark.
 ```
 
 ## 4. Prompt do vídeo da tomada (12 créditos)
 
 ```text
-{sujeito_prompt}. Same setting as the reference scene image: {setting of the original shot, the same concrete description used in the scene image prompt}; keep this background, never the background of the character reference photos. {movement of the scene: gesture, camera, expression}. One continuous shot, no cuts. He says to the camera: "{fala da tomada}" Voice: {voz_descricao}.
+{sujeito_prompt} from the character @{Personagem}. Same setting as the reference scene image @{IMAGE_REF}: {setting of the original shot, the same concrete description used in the scene image prompt}; keep this background, never the background of the character @{Personagem} reference photos. {movement of the scene: gesture, camera, expression}. One continuous shot, no cuts. He says to the camera: "{fala da tomada}" Voice: {voz_descricao}.
 ```
 
 - **Cenário:** o vídeo usa o modo r2v, que NÃO trava o primeiro quadro: o Flow mistura a imagem da cena com as fotos do Personagem, e o fundo das fotos do Personagem pode vencer. Por isso o cenário vai repetido no prompt do vídeo. Ao julgar, reprove o take se o fundo mudou.
 - Mulher ou dupla: troque `He` por `She` ou `They`.
-- Cena `off`: `{sujeito_prompt} narrates off-camera: "{fala}" Voice: {voz_descricao}.`
+- Sem `quadro_s` (imagem t2i, sem `--ref`): comece por `{setting...}.` e `{sujeito_prompt} from the character @{Personagem}.`, sem `@{IMAGE_REF}`.
+- Cena `off`: `{sujeito_prompt} from the character @{Personagem} narrates off-camera: "{fala}" Voice: {voz_descricao}.`
 - Sem fala: termine com `No speech.`
-- Na fala, troque aspas duplas por simples e tire todo `@` (o gflow lê `@nome` como menção).
+- Na fala, troque aspas duplas por simples e tire todo `@` da fala (o gflow lê `@nome` como menção).
 
 ## 5. Como julgar (você olha os frames)
 

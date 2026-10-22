@@ -44,6 +44,23 @@ class GflowCena(unittest.TestCase):
         self.assertNotIn("--reference-entity", cmd)
         self.assertEqual(cmd[cmd.index("--duration") + 1], "8")
 
+    def test_prompt_imagem_cita_referencias_inline(self) -> None:
+        ref = gflow_cena.nome_ref("cenas/01/quadro.jpg")
+        self.assertEqual(ref, "quadro")
+        t = gflow_cena.prompt_imagem(ref, "a sunlit kitchen, white counter", "a man", "Ana")
+        self.assertTrue(t.startswith("Keep the @quadro reference image's exact setting, background,"
+                                     " lighting, camera framing, composition and props: a sunlit kitchen"))
+        self.assertIn("Replace ONLY the person with a man from the character @Ana.", t)
+
+    def test_prompt_video_cita_personagem_cena_e_cenario(self) -> None:
+        t = gflow_cena.prompt_video("imagem", "a sunlit kitchen", "A man", "Ana", "He nods.",
+                                    'diga "oi" @fulano', "warm voice")  # fmt: skip
+        self.assertIn("A man from the character @Ana.", t)
+        self.assertIn("Same setting as the reference scene image @imagem: a sunlit kitchen; keep this"
+                      " background, never the background of the character @Ana reference photos.", t)
+        self.assertIn("He says to the camera: \"diga 'oi' fulano\" Voice: warm voice.", t)
+        self.assertTrue(gflow_cena.prompt_video("i", "c", "A", "N", "", "", "v").endswith("No speech."))
+
 
 class Config(unittest.TestCase):
     def test_ambiente_sobrescreve_arquivo(self) -> None:

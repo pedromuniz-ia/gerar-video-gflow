@@ -22,7 +22,7 @@ Primeiro uso na máquina: siga `reference/instalar.md`. Documentação oficial d
 2. **Teto de créditos.** Cada take de vídeo custa 12 créditos. As imagens não custam. Antes de começar, diga ao usuário a estimativa (`tomadas × 12`). Pare antes de passar do teto que ele deu (padrão: estimativa + 25%).
 3. **Vídeo com `pode_ter_cobrado: true` não se repete.** Abra a galeria do projeto no Flow. Se o vídeo existir, baixe com `gflow data download <media_id> --profile <perfil>`.
 **4. Prompt para o Flow em inglês.** Fala no idioma do avatar (`idioma_saida`). Mensagem para o usuário no idioma dele.
-5. **Nunca escreva o nome do avatar no prompt.** O Personagem vai no comando.
+5. **Nunca escreva o nome do avatar solto no prompt.** O Personagem vai no comando e é citado só como `@<nome_publico>` onde se aplica; a imagem de referência é citada como `@<nome do arquivo sem extensão>` (veja `reference/prompts.md`).
 6. **Personagem travado, cenário do original.** Mesma pessoa e roupa em todas as cenas. O lugar, a luz e os objetos seguem o reel. As fotos do Personagem devem ter fundo neutro, e o prompt do vídeo repete o cenário da cena, porque o r2v não trava o primeiro quadro (veja `reference/prompts.md`).
 
 ## Entrada
@@ -78,7 +78,7 @@ Espere o OK do usuário.
 
 Para cada cena, em ordem:
 
-**4.1 Imagem** (0 crédito). Use o prompt de `reference/prompts.md` §3:
+**4.1 Imagem** (0 crédito). Use o prompt de `reference/prompts.md` §3 (`Keep the @<quadro> reference image's exact setting... Replace ONLY the person with ... from the character @<nome_publico>`):
 
 ```text
 python scripts/gflow_cena.py imagem --projeto <projeto_id> --personagem-id <personagem_id> --personagem-nome "<nome_publico>" --perfil <perfil> --saida videos/<nome>/cenas/01 --prompt "<prompt da imagem>"
@@ -89,7 +89,7 @@ python scripts/gflow_cena.py imagem --projeto <projeto_id> --personagem-id <pers
 
 **4.2 Julgue a imagem.** Abra o `arquivo` que o script devolveu e confira os critérios de `reference/prompts.md` §5. Reprovou: ajuste o prompt e gere outra imagem (é grátis).
 
-**4.3 Vídeo de cada tomada** (12 créditos). Use o prompt do §4:
+**4.3 Vídeo de cada tomada** (12 créditos). Use o prompt do §4, com `@<nome_publico>` e `@imagem` (a imagem aprovada) inline e o cenário concreto repetido:
 
 ```text
 python scripts/gflow_cena.py video --projeto <projeto_id> --personagem-id <personagem_id> --personagem-nome "<nome_publico>" --perfil <perfil> --ref <imagem aprovada> --saida videos/<nome>/cenas/01/tomada-01a --prompt "<prompt do vídeo>"

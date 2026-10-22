@@ -114,6 +114,45 @@ def ultimo_json(texto: str) -> dict:
     return ultimo
 
 
+def nome_ref(caminho: str) -> str:
+    """Nome com que o gflow cita uma referência enviada (@nome): o nome do arquivo sem extensão."""
+    return Path(caminho).stem
+
+
+def limpar_fala(fala: str) -> str:
+    """Aspas duplas viram simples e sai todo ``@`` (o gflow lê ``@nome`` como menção)."""
+    return fala.replace('"', "'").replace("@", "")
+
+
+def prompt_imagem(imagem_ref: str, cenario: str, pessoa: str, personagem_nome: str,
+                  acao: str = "", roupa: str = "") -> str:  # fmt: skip
+    """Prompt da imagem da cena com as referências citadas inline (@quadro e @Personagem)."""
+    partes = [
+        f"Keep the @{imagem_ref} reference image's exact setting, background, lighting, camera "
+        f"framing, composition and props: {cenario}.",
+        f"Replace ONLY the person with {pessoa} from the character @{personagem_nome}.",
+        acao, roupa,
+        "Photorealistic smartphone creator footage, vertical 9:16, 35-50 mm, shallow depth of "
+        "field, natural matte skin with visible pores, matching the original's lighting and "
+        "colors. No cartoon, no 3D render, no plastic or waxy skin, no extra fingers or hands, "
+        "no captions, no on-screen text, no logos, no watermark.",
+    ]
+    return " ".join(p.strip() for p in partes if p and p.strip())
+
+
+def prompt_video(imagem_ref: str, cenario: str, pessoa: str, personagem_nome: str,
+                 movimento: str, fala: str, voz: str, pronome: str = "He") -> str:  # fmt: skip
+    """Prompt r2v com @Personagem e @imagem da cena inline, e o cenário concreto repetido."""
+    final = f'{pronome} says to the camera: "{limpar_fala(fala)}" Voice: {voz}.' if fala else "No speech."
+    partes = [
+        f"{pessoa} from the character @{personagem_nome}.",
+        f"Same setting as the reference scene image @{imagem_ref}: {cenario}; keep this "
+        f"background, never the background of the character @{personagem_nome} reference photos.",
+        movimento, "One continuous shot, no cuts.", final,
+    ]
+    return " ".join(p.strip() for p in partes if p and p.strip())
+
+
 def comando(a: argparse.Namespace) -> list[str]:
     # Sem Personagem na conta: as fotos do avatar vão como --ref (modo referência).
     personagem = (
