@@ -43,9 +43,10 @@ Cada vídeo do Flow sai com 8 s. Divida a fala de cada cena na pontuação em pa
 ## 4. Prompt do vídeo da tomada (12 créditos)
 
 ```text
-{sujeito_prompt}. {movement of the scene: gesture, camera, expression}. One continuous shot, no cuts. He says to the camera: "{fala da tomada}" Voice: {voz_descricao}.
+{sujeito_prompt}. Same setting as the reference scene image: {setting of the original shot, the same concrete description used in the scene image prompt}; keep this background, never the background of the character reference photos. {movement of the scene: gesture, camera, expression}. One continuous shot, no cuts. He says to the camera: "{fala da tomada}" Voice: {voz_descricao}.
 ```
 
+- **Cenário:** o vídeo usa o modo r2v, que NÃO trava o primeiro quadro: o Flow mistura a imagem da cena com as fotos do Personagem, e o fundo das fotos do Personagem pode vencer. Por isso o cenário vai repetido no prompt do vídeo. Ao julgar, reprove o take se o fundo mudou.
 - Mulher ou dupla: troque `He` por `She` ou `They`.
 - Cena `off`: `{sujeito_prompt} narrates off-camera: "{fala}" Voice: {voz_descricao}.`
 - Sem fala: termine com `No speech.`
@@ -67,6 +68,7 @@ Rode `frames.py` na imagem ou no vídeo gerado e confira:
 
 1. A mensagem é a mesma da fala da tomada. Gagueira, palavra repetida, palavra pequena a mais ou a menos passam.
 2. Reprove se faltar ou mudar palavra-chave, número, item citado ou promessa, se o sentido mudou, ou se a fala acaba antes do fim do texto.
-3. Voz no idioma e no timbre do avatar; boca sincronizada; plano contínuo, sem corte; a pessoa não muda no meio.
+3. O cenário é o da imagem da cena (mesmo lugar, fundo e objetos), não o das fotos do Personagem.
+4. Voz no idioma e no timbre do avatar; boca sincronizada; plano contínuo, sem corte; a pessoa não muda no meio.
 
 Reprovou: refaça só aquela tomada (custa outros 12 créditos; conte no teto). Na segunda reprovação pela mesma causa, mude o prompt (por exemplo, simplifique o movimento) antes de gastar de novo.

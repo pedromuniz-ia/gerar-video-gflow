@@ -4,6 +4,7 @@
 2. Coloque as fotos (JPG, rosto bem iluminado, sem texto nem marca d'água):
    - `rosto.jpg` — close do rosto, de frente.
    - `corpo.jpg` — corpo inteiro ou meio corpo, com a roupa fixa do avatar.
+   - **Fundo neutro (liso ou de estúdio) nas duas fotos.** O vídeo do Flow (modo r2v) mistura as fotos do Personagem com a imagem da cena, e um fundo marcante (terraço, casa, rua) tende a invadir todas as cenas. Com fundo liso, o cenário do reel prevalece.
    - Opcional: mais ângulos/expressões; liste todas em `fotos`.
 3. Em `reference/avatares.json`, duplique a entrada `exemplo`, troque a chave por `<chave>` e preencha os campos (veja `reference/avatares.md`).
 4. Na primeira geração, o agente cria o Personagem no Flow (SKILL.md, passo 1b) e anota `projeto_id` e `personagem_id` em `contas.<seu-perfil>`.

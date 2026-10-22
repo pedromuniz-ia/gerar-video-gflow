@@ -23,7 +23,7 @@ Primeiro uso na máquina: siga `reference/instalar.md`. Documentação oficial d
 3. **Vídeo com `pode_ter_cobrado: true` não se repete.** Abra a galeria do projeto no Flow. Se o vídeo existir, baixe com `gflow data download <media_id> --profile <perfil>`.
 **4. Prompt para o Flow em inglês.** Fala no idioma do avatar (`idioma_saida`). Mensagem para o usuário no idioma dele.
 5. **Nunca escreva o nome do avatar no prompt.** O Personagem vai no comando.
-6. **Personagem travado, cenário do original.** Mesma pessoa e roupa em todas as cenas. O lugar, a luz e os objetos seguem o reel.
+6. **Personagem travado, cenário do original.** Mesma pessoa e roupa em todas as cenas. O lugar, a luz e os objetos seguem o reel. As fotos do Personagem devem ter fundo neutro, e o prompt do vídeo repete o cenário da cena, porque o r2v não trava o primeiro quadro (veja `reference/prompts.md`).
 
 ## Entrada
 
