@@ -1,0 +1,4 @@
+config.json
+videos/
+__pycache__/
+.ruff_cache/

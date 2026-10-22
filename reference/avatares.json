@@ -1,0 +1,27 @@
+{
+  "_leia": "Modelo. Duplique a entrada 'exemplo', troque a chave pelo nome da pasta em avatares/<chave>/ e preencha. Campos explicados em reference/avatares.md.",
+  "avatares": {
+    "exemplo": {
+      "nome_publico": "NOME_DO_AVATAR",
+      "idioma_saida": "pt-BR",
+      "publico": "Descreva o público do seu nicho",
+      "modo_roteiro": "fiel",
+      "sujeito_prompt": "The person in the reference photos",
+      "voz_flow": "ESCOLHA_UMA_VOZ_DO_FLOW",
+      "voz_descricao": "Describe voice: gender, age, accent, pace, tone.",
+      "personalidade_flow": "Descreva a personalidade e o jeito de falar.",
+      "cta_seguir": "",
+      "politica_marcas": "generico",
+      "linhas_vermelhas": [
+        "Do not invent biography, credentials, products or personal results.",
+        "Flag health, money or legal claims for human review."
+      ],
+      "biblia_visual": "Describe face, hair, age, fixed wardrobe and an identity anchor (accessory). Setting follows the original video. Photorealistic, vertical 9:16.",
+      "legenda": {"estilo_id": "amarelo_pop", "posicao_y_rel": 0.70, "tamanho_rel": 0.04, "emojis": false},
+      "contas": {
+        "minha-conta": {"projeto_id": "", "personagem_id": ""}
+      },
+      "fotos": ["avatares/exemplo/rosto.jpg", "avatares/exemplo/corpo.jpg"]
+    }
+  }
+}
